@@ -9,7 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Image } from "next/image";
+
 export default function Header2() {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center justify-between">

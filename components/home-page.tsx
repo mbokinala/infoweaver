@@ -65,7 +65,7 @@ export function HomePage() {
                   Pricing for Students
                 </h2>
                 <p className="text-muted-foreground text-lg md:text-xl lg:text-2xl">
-                  Unlock your full potential with InfoWeaver's student-focused plans.
+                  Unlock your full potential with InfoWeaver&apos;s student-focused plans.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -137,7 +137,7 @@ export function HomePage() {
   )
 }
 
-function CheckIcon(props) {
+function CheckIcon(props: any) {
   return (
     <svg
       {...props}
@@ -157,7 +157,7 @@ function CheckIcon(props) {
 }
 
 
-function LogOutIcon(props) {
+function LogOutIcon(props: any) {
   return (
     <svg
       {...props}
@@ -179,7 +179,7 @@ function LogOutIcon(props) {
 }
 
 
-function MountainIcon(props) {
+function MountainIcon(props: any) {
   return (
     <svg
       {...props}
@@ -199,7 +199,7 @@ function MountainIcon(props) {
 }
 
 
-function SettingsIcon(props) {
+function SettingsIcon(props: any) {
   return (
     <svg
       {...props}
@@ -220,7 +220,7 @@ function SettingsIcon(props) {
 }
 
 
-function UserIcon(props) {
+function UserIcon(props: any) {
   return (
     <svg
       {...props}
