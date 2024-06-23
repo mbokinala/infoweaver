@@ -1,6 +1,8 @@
 import { LessonPage } from "@/components/lesson-page";
 import { LessonPage2 } from "@/components/lesson-page2";
 
+export const dynamic = "force-dynamic";
+
 export default function Lesson({ params }: { params: { id: string } }) {
   // get the lesson id from the URL
 
