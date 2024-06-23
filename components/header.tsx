@@ -58,7 +58,7 @@ export function Header() {
   )
 }
 
-function ChevronDownIcon(props) {
+function ChevronDownIcon(props: any) {
   return (
     <svg
       {...props}
@@ -78,7 +78,7 @@ function ChevronDownIcon(props) {
 }
 
 
-function InfoIcon(props) {
+function InfoIcon(props: any) {
   return (
     <svg
       {...props}

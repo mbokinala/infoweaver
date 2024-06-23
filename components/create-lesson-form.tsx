@@ -64,7 +64,7 @@ export function CreateLessonForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="content-type">Content Type</Label>
-            <Select id="content-type">
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select content type" />
               </SelectTrigger>
