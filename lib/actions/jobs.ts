@@ -10,8 +10,6 @@ export async function regenerate(jobId: string) {
 }
 
 export async function pdfParse(fileContents: string, tag: string) {
-  // console.log(fileContents);
-
   console.log('generating script')
 
   const result = await generateText({
