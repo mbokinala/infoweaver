@@ -1,5 +1,3 @@
-"use server";
-
 import { JobList } from "@/components/job-list";
 import { db } from "@/lib/db/db";
 
