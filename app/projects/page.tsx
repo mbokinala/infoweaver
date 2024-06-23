@@ -1,6 +1,8 @@
 import { JobList } from "@/components/job-list";
 import { db } from "@/lib/db/db";
 
+export const dynamic = 'force-dynamic';
+
 async function getJobs() {
   let jobs = await db.getJobs();
   console.log(jobs)
