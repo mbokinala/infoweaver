@@ -2,6 +2,9 @@
 import { db } from "@/lib/db/db";
 import { Script } from "@/lib/db/types";
 import { QuizQuestion } from "./QuizQuestion";
+import { Button } from "./ui/button";
+import { regenerateQuiz } from "@/lib/actions/jobs";
+import RegenButton from "./regenbutton";
 
 async function getScript(scriptId: string): Promise<Script> {
   return await db.getScript(scriptId);
@@ -25,17 +28,16 @@ export async function LessonPage2({ scriptId }: { scriptId: string }) {
 
   return (
     <section className="max-w-screen py-12 max-h-min">
-      <div
-        className="container grid gap-6 grid-cols-2"
-      >
-        <div
-          className="rounded-xl overflow-hidden"
-        >
+      <div className="container grid gap-6 grid-cols-2">
+        <div className="rounded-xl overflow-hidden">
           <video className="w-full aspect-video" src={videoUrl} controls />
         </div>
         <div className="col-span-1 grid gap-4">
           <div className="rounded-xl">
-            <h2 className="text-xl font-semibold">Interactive Quiz</h2>
+            <div className="flex flex-row items-center justify-between">
+              <h2 className="text-xl font-semibold">Interactive Quiz</h2>
+              <RegenButton scriptId={scriptId} />
+            </div>
             <p className="text-sm text-muted-foreground">
               Test your knowledge from the video lesson.
             </p>
@@ -55,5 +57,3 @@ export async function LessonPage2({ scriptId }: { scriptId: string }) {
     </section>
   );
 }
-
-

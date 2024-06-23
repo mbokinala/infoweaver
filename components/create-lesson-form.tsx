@@ -24,14 +24,14 @@ import pdfToText from "react-pdftotext";
 import { Spinnaker } from "next/font/google";
 import { ThreeDots } from "react-loader-spinner";
 import { title } from "process";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export function CreateLessonForm() {
   const fileRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
-  
+
   const handleSubmit = async () => {
     setLoading(true);
     if (!fileRef.current?.files) {
@@ -60,7 +60,7 @@ export function CreateLessonForm() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title">Lesson Title</Label>
-            <Input id="title" placeholder="Enter lesson title" />
+            <Input id="title" placeholder="Enter lesson title" ref={titleRef} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="content-type">Content Type</Label>

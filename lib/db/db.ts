@@ -80,6 +80,17 @@ class Database {
   async createJob(job: Partial<VideoGenerateJob>) {
     return await this.db.collection("jobs").add(job);
   }
+
+  async updateQuiz(scriptId: string, newQuiz: Partial<Quiz>) {
+    let doc = await this.db
+      .collection("quizzes")
+      .where("scriptId", "==", scriptId)
+      .get();
+    if (doc.empty) {
+      return null;
+    }
+    await this.db.collection("quizzes").doc(doc.docs[0].id).update(newQuiz);
+  }
 }
 
 export const db = new Database();

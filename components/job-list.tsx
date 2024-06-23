@@ -18,7 +18,7 @@ export function JobList({
   return (
     <section className="container mx-auto px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold">Asynchronous Jobs</h1>
+        <h1 className="text-3xl font-bold">Your Lessons</h1>
       </header>
       <div className="grid gap-6">
         {jobs.map((job) => (
@@ -30,7 +30,7 @@ export function JobList({
                 </h2>
               </Link>
               <div className="flex items-center">
-                {job.status === "done" && (
+                {(job.status === "done" || job.status === 'failed') && (
                   <Button
                     variant="outline"
                     size="sm"

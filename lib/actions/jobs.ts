@@ -3,14 +3,16 @@
 import router from "next/router";
 import { db } from "../db/db";
 import { openai } from "@ai-sdk/openai";
-import { generateText } from "ai";
+import { generateObject, generateText } from "ai";
+import { Quiz, ScriptSection } from "../db/types";
+import { z } from "zod";
 
 export async function regenerate(jobId: string) {
   await db.requeueJob(jobId);
 }
 
 export async function pdfParse(fileContents: string, tag: string) {
-  console.log('generating script')
+  console.log("generating script");
 
   const result = await generateText({
     model: openai("gpt-4o"),
@@ -23,20 +25,54 @@ export async function pdfParse(fileContents: string, tag: string) {
       {
         role: "user",
         content: fileContents,
-      }
+      },
     ],
   });
 
-  console.log('generated script');
-
+  console.log("generated script");
 
   let script = result.text.replaceAll("```json", "").replaceAll("`", "");
   let scriptObj = JSON.parse(script);
 
-  let scriptResult = await db.saveScript({sections: scriptObj, tag});
+  let scriptResult = await db.saveScript({ sections: scriptObj, tag });
   await db.createJob({
     scriptId: scriptResult.id,
     createdAt: Date.now(),
     status: "queued",
-  })
+  });
+}
+
+async function generate_quiz(
+  script: ScriptSection[],
+  existingQuiz: Quiz | null
+) {
+  const result = await generateObject({
+    model: openai("gpt-4o"),
+    prompt: `Generate 7 quiz questions based on the content in the script below. DO NOT make it based on the video. Test for understanding of the content, not memorizing the video. Make it unique. Here is the content: ${JSON.stringify(
+      script
+    )}.\n\n Make sure it is fairly different from the old quiz: ${JSON.stringify(
+      existingQuiz
+    )}`,
+    schema: z.object({
+      questions: z.array(
+        z.object({
+          question: z.string(),
+          choices: z.array(z.string()),
+          answerIndex: z.number(),
+        })
+      ),
+    }),
+  });
+
+  return result.object as Partial<Quiz>;
+}
+
+export async function regenerateQuiz(scriptId: string) {
+  let script = await db.getScript(scriptId);
+  let existingQuiz = await db.getQuiz(scriptId);
+  let scriptObj = script.sections;
+
+  let newQuiz = await generate_quiz(scriptObj, existingQuiz);
+
+  await db.updateQuiz(scriptId, newQuiz);
 }
