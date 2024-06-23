@@ -76,3 +76,69 @@ export async function regenerateQuiz(scriptId: string) {
 
   await db.updateQuiz(scriptId, newQuiz);
 }
+
+async function generate_frq(script: ScriptSection[]) {
+  let all_narration = "";
+  for (let section of script) {
+    for (let bullet of section.bulletPoints) {
+      all_narration += bullet.narration + " \n";
+    }
+  }
+
+  const result = await generateObject({
+    model: openai("gpt-4o"),
+    prompt: `Given the following information, generate 3 free response questions that test for understanding of the content. Here is the content: ${all_narration}`,
+    schema: z.object({
+      questions: z.array(
+        z.object({
+          question: z.string(),
+          answerKeyPoints: z
+            .string()
+            .describe(
+              "Key points to look for in the answer. These should include correct names, events, topics, etc. Will be used to grade the responses."
+            ),
+        })
+      ),
+    }),
+  });
+
+  return result.object;
+}
+
+export async function createFRQ(scriptId: string) {
+  console.log("Creating FRQ for script", scriptId);
+  let script = await db.getScript(scriptId);
+  let quiz = await generate_frq(script.sections);
+  await db.createFRQ({ scriptId, ...quiz });
+  console.log("saved script");
+}
+
+export async function gradeFRQ(
+  question: {
+    question: string;
+    answerKeyPoints: string[];
+  },
+  answer: string
+) {
+  const result = await generateObject({
+    model: openai("gpt-4o"),
+    messages: [
+      {
+        role: "system",
+        content: `You are grading the following FRQ: ${question.question}.\n
+    The key points to look for in the answer are: ${question.answerKeyPoints} \n
+    Give 2-3 sentences feedback, and a letter grade.
+    `,
+      },
+      {
+        role: "user",
+        content: `The student's answer was: ${answer}`,
+      },
+    ],
+    schema: z.object({
+      feedback: z.string(),
+    }),
+  });
+
+  return result.object;
+}

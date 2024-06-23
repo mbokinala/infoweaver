@@ -3,8 +3,10 @@ import { db } from "@/lib/db/db";
 import { Script } from "@/lib/db/types";
 import { QuizQuestion } from "./QuizQuestion";
 import { Button } from "./ui/button";
-import { regenerateQuiz } from "@/lib/actions/jobs";
+import { gradeFRQ, regenerateQuiz } from "@/lib/actions/jobs";
 import RegenButton from "./regenbutton";
+import { useRef } from "react";
+import FRQBox from "./FRQBox";
 
 async function getScript(scriptId: string): Promise<Script> {
   return await db.getScript(scriptId);
@@ -12,13 +14,18 @@ async function getScript(scriptId: string): Promise<Script> {
 
 async function getQuiz(scriptId: string) {
   let quiz = await db.getQuiz(scriptId);
-  console.log(quiz);
+  return quiz;
+}
+
+async function getFRQ(scriptId: string) {
+  let quiz = await db.getFRQ(scriptId);
   return quiz;
 }
 
 export async function LessonPage2({ scriptId }: { scriptId: string }) {
   const script = await getScript(scriptId);
   const quiz = await getQuiz(scriptId);
+  const frq = await getFRQ(scriptId);
 
   const videoUrl = `https://berkeley-hackathon.s3.us-east-2.amazonaws.com/video/${scriptId}/video.mp4`;
 
@@ -51,6 +58,13 @@ export async function LessonPage2({ scriptId }: { scriptId: string }) {
                 answerIndex={question.answerIndex}
               />
             ))}
+
+            <div className="rounded-xl bg-card p-4">
+              {frq &&
+                frq.questions.map((q) => (
+                  <FRQBox question={q} key={q.question} />
+                ))}
+            </div>
           </div>
         </div>
       </div>

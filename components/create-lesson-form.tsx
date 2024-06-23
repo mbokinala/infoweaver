@@ -76,8 +76,9 @@ export function CreateLessonForm() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="file">Upload PDF</Label>
+            <Label htmlFor="file">Upload Content</Label>
             <Input id="file" type="file" ref={fileRef} />
+            <span className="mt-0 py-0 ml-1 text-slate-500 text-xs">.pdf, .mov, .docx, .mp4</span>
           </div>
         </CardContent>
         <CardFooter>

@@ -1,10 +1,11 @@
 "use client";
 
-import { regenerateQuiz } from "@/lib/actions/jobs";
+import { createFRQ, regenerateQuiz } from "@/lib/actions/jobs";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { ThreeDots } from "react-loader-spinner";
 import { useState } from "react";
+import { create } from "domain";
 
 export default function RegenButton({ scriptId }: { scriptId: string }) {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function RegenButton({ scriptId }: { scriptId: string }) {
     <Button
       onClick={async () => {
         setLoading(true);
+        await createFRQ(scriptId);
         await regenerateQuiz(scriptId);
         setLoading(false);
         router.refresh();

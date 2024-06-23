@@ -91,6 +91,21 @@ class Database {
     }
     await this.db.collection("quizzes").doc(doc.docs[0].id).update(newQuiz);
   }
+
+  async createFRQ(frq: any) {
+    return await this.db.collection("frqs").add(frq);
+  }
+
+  async getFRQ(scriptId: string) {
+    let doc = await this.db
+      .collection("frqs")
+      .where("scriptId", "==", scriptId)
+      .get();
+    if (doc.empty) {
+      return null;
+    }
+    return { ...doc.docs[0].data(), id: doc.docs[0].id } as Quiz;
+  }
 }
 
 export const db = new Database();
