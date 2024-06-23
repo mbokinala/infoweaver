@@ -16,7 +16,7 @@ import { Quiz, Script, VideoGenerateJob } from "./types";
 var serviceAccount = process.env.FIREBASE_SERVICE_ACCT ?? "";
 if (!getApps().length) {
   initializeApp({
-    credential: cert(serviceAccount),
+    credential: cert(JSON.parse(serviceAccount)),
   });
 }
 class Database {
