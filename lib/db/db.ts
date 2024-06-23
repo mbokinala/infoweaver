@@ -13,7 +13,7 @@ import {
 } from "firebase-admin/firestore";
 import { Quiz, Script, VideoGenerateJob } from "./types";
 
-var serviceAccount = process.env.FIREBASE_SERVICE_ACCT && require("./firebase-key.json");
+var serviceAccount = process.env.FIREBASE_SERVICE_ACCT ?? require("./firebase-key.json");
 if (!getApps().length) {
   initializeApp({
     credential: cert(serviceAccount),
