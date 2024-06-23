@@ -18,7 +18,7 @@ export default function Header2() {
         className="flex items-center justify-center"
         prefetch={false}
       >
-        <img src="infoweaver.jpg" width={48} alt="logo"/>
+        <img src="spider.png" width={48} alt="logo"/>
         <h4 className="sr-only">InfoWeaver</h4>
       </Link>
       <nav className="flex gap-4 sm:gap-6">
